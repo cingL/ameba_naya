@@ -11,7 +11,8 @@ from crawl_url import download_page
 # get all passage urls from blog_link.txt
 def get_url():
     links = {}
-    with codecs.open('blog_link.txt', 'rb', 'utf-8') as f:
+    # with codecs.open('blog_link.txt', 'rb', 'utf-8') as f:
+    with codecs.open('blog_link_180116.txt', 'rb', 'utf-8') as f:
         for line in f:
             # print(line.split(',')[0])
             arr = line.split(',')
