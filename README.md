@@ -1,5 +1,5 @@
 # ameblo_naya
-get all images from naya's ameblo
+get all images from naya's ameba
 
 crawl_url.py → get all ameblo links in search result page
 
