@@ -1,5 +1,5 @@
 # ameblo_zaiki
-modify param.py
+modify param.py to fix your require
 
 URL → blog list page
 
