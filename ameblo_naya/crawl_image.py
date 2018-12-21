@@ -33,7 +33,7 @@ def crawl(url, prefix):
     if not os.path.exists(time):
         os.mkdir(time)
     # named image with title and index
-    # all_a = soup.find_all('a', attrs={'class': 'detailOn'}) -> soup读出来找不到了，懒加载了？
+    # all_a = soup.find_all('a', attrs={'class': 'detailOn'}) -> soup读出来找不到了
     all_a = soup.find_all('a')
     index = 0
     for each_a in all_a:
@@ -42,7 +42,7 @@ def crawl(url, prefix):
             img_link = img['src']
             if img_link[-3:] == '800':
                 index += 1
-                img_path = './' + time + '/' + prefix[5:] + '-' + index.__str__() + '.jpg'
+                img_path = './' + time + '/' + prefix + '-' + index.__str__() + '.jpg'
                 print('img_name = ' + img_path)
                 print('img_link = ' + img_link)
                 img_r = requests.get(img_link, stream=True)

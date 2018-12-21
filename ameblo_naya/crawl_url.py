@@ -36,11 +36,37 @@ def parse_html(html):
     return blog_list_urls, None
 
 
+def parse_html_from_list(html):
+    """
+    記事一覧
+   """
+    list_urls = []
+    soup = BeautifulSoup(html, 'html.parser')
+    items = soup.find_all('li', attrs={'class': 'skin-borderQuiet'})
+    for item in items:
+        time = item.find('p', attrs={'data-uranus-component': 'entryItemDatetime'}).getText()
+        time_array = re.split('\D', time)
+        item_time = datetime.date(int(time_array[0]), int(time_array[1]), int(time_array[2]))
+        if item_time > param.latest_date:
+            title = item.find('h2').getText()
+            link = param.site_prefix + item.find('h2').find('a')['href']
+            list_urls.append(link + ',' + title + ',' + item_time.__str__())
+            print(link + ',' + title + ',' + item_time.__str__())
+        else:
+            return list_urls, None
+
+    next_page = soup.find('a', attrs={'data-uranus-component': 'paginationNext'})
+    if next_page:
+        return list_urls, param.site_prefix + next_page['href']
+    return list_urls, None
+
+
 if __name__ == '__main__':
     current_url = param.URL
     with codecs.open(param.blog_link_txt_name, 'wb', encoding='utf-8') as fp:
         while current_url:
             current_html = download_page(current_url)
-            urls, current_url = parse_html(current_html)
+            # urls, current_url = parse_html(current_html)
+            urls, current_url = parse_html_from_list(current_html)
             fp.write('{urls}\n'.format(urls='\n'.join(urls)))
-            print('{urls}\n'.format(urls='\n'.join(urls)))
+            # print('{urls}\n'.format(urls='\n'.join(urls)))
