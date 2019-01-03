@@ -1,6 +1,7 @@
 import codecs
 import datetime
 import re
+import string
 
 import requests
 from bs4 import BeautifulSoup
@@ -36,6 +37,16 @@ def parse_html(html):
     return blog_list_urls, None
 
 
+def get_time(time):
+    date = []
+    time_array = re.split('\D', time)
+    for i in time_array:
+        if i.isdigit():
+            date.append(i)
+        if date.__len__() == 3:
+            return datetime.date(int(date[0]), int(date[1]), int(date[2]))
+
+
 def parse_html_from_list(html):
     """
     記事一覧
@@ -45,8 +56,7 @@ def parse_html_from_list(html):
     items = soup.find_all('li', attrs={'class': 'skin-borderQuiet'})
     for item in items:
         time = item.find('p', attrs={'data-uranus-component': 'entryItemDatetime'}).getText()
-        time_array = re.split('\D', time)
-        item_time = datetime.date(int(time_array[0]), int(time_array[1]), int(time_array[2]))
+        item_time = get_time(time)
         if item_time > param.latest_date:
             title = item.find('h2').getText()
             link = param.site_prefix + item.find('h2').find('a')['href']
